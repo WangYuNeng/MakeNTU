@@ -1,70 +1,30 @@
+import time
 
 def read(file_name):
     txt = open(file_name,'r', encoding='latin-1')
     out=txt.read()
-    length=len(out)
     string_list=[]
-    frequency=""
-    for i in range(length):
-        k=out.find("frequency")
-        k+= (len("frequency")+2)
-        for j in range(k, length):
-            if out[j]=='\"':
-                for m in range(j+1,length):
-                    frequency += out[m]
-                    if out[m+1]=='\"':
+    string_list.append(time.strftime("%m%d-%H:%M:%S", time.localtime()))
+    name_list = ["frequency", "close_eye", "yawn", "posture", "unknown"]
+    for target in name_list:
+        target_content = ""
+        pos =  out.find(target)
+        pos += (len(target)+3)
+        for i in range(pos, len(out)):
+            if target == "frequency" and out[i] == ' ':
+                for j in range(i+1,len(out)):
+                    target_content += out[j]
+                    if out[j+1] == ',':
                         break
                 break
-        break
-    print(frequency)
 
-    for i in range(length):
-        k=out.find("close_eye")
-        k+=(len("close_eye")+2)
-        for j in range(k, length):
-            if out[j]=='\"':
-                close=out[j+1]
+            if out[i] == '\"':
+                for j in range(i+1,len(out)):
+                    target_content += out[j]
+                    if out[j+1] == '\\':
+                        break
                 break
-        break
-    string_list.append(close)
-    print(close)
-
-    for i in range(length):
-        k=out.find("yawn")
-        k+=(len("yawn")+2)
-        for j in range(k, length):
-            if out[j]=='\"':
-                yawn=out[j+1]
-                break
-        break
-    string_list.append(yawn)
-    print(yawn)
-
-    for i in range(length):
-        k=out.find("posture")
-        k+=(len("posture")+2)
-        for j in range(k, length):
-            if out[j]=='\"':
-                posture=out[j+1]
-                break
-        break
-            
-    string_list.append(posture)
-    print(posture)
-
-    for i in range(length):
-        k=out.find("unknown")
-        k+=(len("unknown")+2)
-        for j in range(k, length):
-            if out[j]=='\"':
-                unknown=out[j+1]
-                break
-        break
-    string_list.append(unknown)
-    print(unknown)
+        string_list.append(target_content)
     txt.close()
     return string_list
 
-    # Main method.
-if __name__ == '__main__':
-read("temp.txt")
