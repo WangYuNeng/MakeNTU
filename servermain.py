@@ -1,10 +1,7 @@
 import iot_download
 import readfile
 import csv
-
-def create_csv(csv_file_name):
-    with open(csv_file_name, "w") as my_empty_csv:
-        pass
+import os
 
 def add_csv(csv_string):
     with open(r'csvfile.csv', 'a', encoding='utf-8') as f:
@@ -25,19 +22,19 @@ def compareTime(new, old):
         i+=1;
     return 1
 
-
-create_csv("test.csv")  
 csv_list=[]
+#need a initial file with "Time8"
 filetxt = open('filename_new.txt', 'r')
 newfile = filetxt.readline()[:-1]
 oldfile = filetxt.readline()[:-1]
 if (compareTime(newfile, oldfile)):  #need to be implement by read the content of the file  
-
+    os.remove("download/"+oldfile)
     csv_list=readfile.read("download/"+newfile)
     filetxt.close()
     #filname from bash script here ^^^^^^^
-
+    print("update success")    
     add_csv(csv_list)
 else :
     print("no update")
+    os.remove("download/"+oldfile)
 filetxt.close()
